@@ -5,7 +5,6 @@ import com.isep.rpg.heros.*;
 import com.isep.rpg.item.Weapon;
 import com.isep.utils.InputParser;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -172,11 +171,11 @@ private Combatant badOne;
 
             // Attaque de l'ennemi
             displayMessage("\r\nLe vilain " + badOne.getName()
-                    + " attaque le gentil " + goodOne.getName() + "...");
+                    + " attaque ⚔ le gentil " + goodOne.getName() + "...");
             badOne.fight(goodOne);
             if (goodOne.getHealthPoint() <= 0) {
                 displayMessage
-                        ("\r\n" + FOND_ROUGE + "Oh nan ! Le pauvre " + goodOne.getName() + " a été vaincu..." + RESET);
+                        ("\r\n" + FOND_ROUGE + "Oh nan ! Le pauvre " + goodOne.getName() + " a été vaincu... ☠ " + RESET);
                 heros.remove(ixHero);
                 ixHero--; // Correction: évite que le suivant perde son tour
             } else {
@@ -185,7 +184,7 @@ private Combatant badOne;
 
                 if (badOne.getHealthPoint() <= 0) {
                     displayMessage("\r\n" + FOND_VERT + "Bien joué, " + goodOne.getName()
-                            + " a vaincu " + badOne.getName() + " !!!" + RESET );
+                            + " a vaincu " + badOne.getName() + " !!! ☠ " + RESET );
                     enemies.remove(0);
                 }
 
@@ -193,11 +192,11 @@ private Combatant badOne;
 
                // Tests de fin du jeu
             if (heros.size() == 0) {
-                displayMessage(FOND_ROUGE + "Malheureusement, les héros ont perdu, c'est la fin du monde..." + RESET);
+                displayMessage(FOND_ROUGE + "Malheureusement, les héros ont perdu, c'est la fin du monde... \uD83D\uDE2D " + RESET);
                 break;
             }
             if (enemies.size() == 0) {
-                displayMessage(FOND_VERT + "BRAVO, les héros ont gagné, le monde est sauvé !!!" + RESET);
+                displayMessage(FOND_VERT + "BRAVO, les héros ont gagné, le monde est sauvé !!! \uD83C\uDFC6 " + RESET);
                 System.out.println(RESET);
                 break;
             }
@@ -205,70 +204,71 @@ private Combatant badOne;
             // Au tour du héro suivant
             ixHero = (ixHero + 1) % heros.size();
         }
+        String answer;
+
+        Scanner nouvellePartie = new Scanner(System.in);
+        System.out.print("\r\n\t" + FOND_NOIR + YELLOW + "Veux-tu recommencer la partie ?" + RESET + " ");
+        answer = nouvellePartie.nextLine();
+
+        switch (answer) {
+            case "Oui" :
+                System.out.println("\n\n\n\n\n");
+                Game game = new Game();
+                game.start();
+                break;
+
+            case "Non" :
+                System.out.println("\r\n\t" + FOND_NOIR + YELLOW + "À bientôt !" + RESET + " ");
+                break;
+        }
     }
 
     private void playerTurn() {
-    /*
-    * Demander valeur à l'utilisateur
-        * if attaquer
-            * mettre les 3 lignes du bas
-        * if utiliser un consomable
-            * afficher actions non implémentées, vous avez perdu votre tour
-        * if se défendre
-            * afficher actions non implémentées, vous avez perdu votre tour
-     */
 
         String nb;
         Scanner scannerZ = new Scanner(System.in);
-        System.out.print(BLUE + "\r\nQue voulez vous faire ? (Attaquer, Consommer, Se défendre) " + RESET);
+        System.out.print(BLUE + "\r\nQue voulez vous faire ? (Attaquer ⚔ , Se défendre \uD83D\uDEE1 ) " + RESET);
         nb = scannerZ.nextLine();
-
-
-        /*
-        * if !healer
-        *   cicle = badOne
-        * else if healer
-        *   cicle = chooeAGoodOne() -> retur le heros selectionner
-        * goodOne.fight(cible)
-         */
-
-
 
 
         ((Hero) goodOne).looseProtection();
         switch (nb) {
-             case "Attaquer" : // Riposte du gentil, s'il n'est pas vaincu
+             case "Attaquer" : // Riposte du gentil (ou soigne si c'est un healer), s'il n'est pas vaincu
 
                  Combatant cible;
 
                  if (!(goodOne instanceof Healer)) {
-                     Scanner scannerx = new Scanner(System.in);
-                     System.out.print(RED + "\r\nQuel méchant veux-tu attaquer ? " + RESET);
-                     System.out.println(enemies);
-                     System.out.println("choisir un méchant entre 1 et " + enemies.size());
-                     int  choosegoodOne = scannerx.nextInt();
-                     cible = enemies.get(choosegoodOne-1);
-                 }
+                     int chooseBadOne = 1;
+                     if (enemies.size() > 1) {
+                         Scanner scannerx = new Scanner(System.in);
+                         System.out.print(RED + "\r\nQuel ennemi veux-tu attaquer ⚔ ? " + RESET);
+                         System.out.println(enemies);
+                         System.out.println("Choisis un ennemi entre 1 et " + enemies.size() + " : ");
+                         chooseBadOne = scannerx.nextInt();
 
+                     }
+                     cible = enemies.get(chooseBadOne - 1);
+                     displayMessage("Le gentil " + goodOne.getName()
+                             + " attaque ⚔ le vilain " + cible.getName() + "...");
+                     goodOne.fight(cible);
+                 }
                  else {
-                     Scanner scannerx = new Scanner(System.in);
-                     System.out.print(PURPLE + "\r\nQuel héros veux-tu soigner ? " + RESET);
-                     System.out.println(heros);
-                     System.out.println("choisir un héro entre 1 et " + heros.size());
-                     int  choosegoodOne = scannerx.nextInt();
-                     cible = heros.get(choosegoodOne-1);
+
+                     int chooseGoodOne = 1;
+                     if (heros.size() > 1) {
+                         Scanner scannerv = new Scanner(System.in);
+                         System.out.print(PURPLE + "\r\nQuel héros veux-tu soigner \uD83D\uDC8A ? " + RESET);
+                         System.out.println(heros);
+                         System.out.println("Choisis un héros entre 1 et " + heros.size() + " : ");
+                         chooseGoodOne = scannerv.nextInt();
+                     }
+
+                     cible = heros.get(chooseGoodOne-1);
+                     displayMessage("Le gentil " + goodOne.getName()
+                             + " soigne \uD83D\uDC8A le gentil " + cible.getName() + "...");
+                     goodOne.fight(cible);
                  }
-
-                 displayMessage("Le gentil " + goodOne.getName()
-                         + " attaque le vilain " + cible.getName() + "...");
-                 goodOne.fight(cible);
-
-
                  break;
-
-             case "Consommer" :
-                break;
-
 
              case "Se défendre" : // Divise les dégats subies par 2 pendant 1 tour
                  ((Hero) goodOne).addProtection();
@@ -313,4 +313,6 @@ private Combatant badOne;
         System.out.println(message);
     }
 
+
 }
+

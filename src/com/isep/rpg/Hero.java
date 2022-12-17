@@ -10,18 +10,12 @@ public abstract class Hero extends Combatant {
         super(n, h);
     }
 
-    // Abstrait car n'importe quel hero peut prendre un objet mais son
-    // utilisation dépend du type du héro (une arme n'est pas utile à un mage)
-
-    public void take(Item item) {
-
-    }
     @Override
     public void loose(int hp) {
         healthPoint -= hp/armor;
         // ... équivalant à : healthPoint = healthPoint - hp;
         if (armor!=1){
-            System.out.println("Le bouclier a réduit les dégats par " + armor);
+            System.out.println("Le bouclier \uD83D\uDEE1 a réduit les dégats par " + armor);
 
         }
     }
@@ -41,6 +35,6 @@ public abstract class Hero extends Combatant {
     }
     public void fight(Combatant combatant) {
         combatant.loose(weapon.getDamagePoints());
-        System.out.println(this.getName() + " attaque " + combatant.getName() + "  | Dégats causés = " + weapon.getDamagePoints());
+        System.out.println(this.getName() + " attaque ⚔ " + combatant.getName() + "  | Dégats causés = " + weapon.getDamagePoints());
     }
 }

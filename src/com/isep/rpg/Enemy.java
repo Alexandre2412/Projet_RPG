@@ -11,7 +11,7 @@ public abstract class Enemy extends Combatant {
     @Override
     public void fight(Combatant combatant) {
         combatant.loose(damage);
-        System.out.println(this.getName() + " attaque " + combatant.getName() + "  | Dégats subies = " + damage/((Hero) combatant).getBouclier());
+        System.out.println(this.getName() + " attaque ⚔ " + combatant.getName() + "  | Dégats subies = " + damage/((Hero) combatant).getBouclier());
     }
 
 }

@@ -24,7 +24,7 @@ public abstract class Combatant {
     // pour la méthode "fight"
     public abstract void fight(Combatant combatant);
 
-    private String name;
+    private final String name;
     protected int healthPoint;
 
 }
